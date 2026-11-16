@@ -1,0 +1,24 @@
+.env
+.env.*
+!.env.example
+.venv/
+.cache/
+runs/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.DS_Store
+
+# competition data: download from the portal, never commit
+train/
+public_test/
+eval_sets/
+data/
+*.jsonl
+*.json
+*.log
+*.tar.gz
+*.zip
+*.csv
+*.patch

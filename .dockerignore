@@ -1,0 +1,20 @@
+# Development-only files; everything the image needs (src/, training_code/, predict.sh, README.md,
+# requirements.txt) is kept. training_code/ and its data are intentionally NOT ignored.
+.git
+.venv
+.cache
+.env
+.env.*
+**/__pycache__
+*.pyc
+runs
+results
+submissions
+submission.jsonl
+eval_sets
+manifests
+data
+train
+public_test
+scripts
+tests
