@@ -4,8 +4,7 @@
 (https://huggingface.co/Qwen/Qwen3.5-9B, revision `c202236235762e1c871ad0ccb60c8ee5ba337b9a`, Apache-2.0),
 stored in the image at `/code/models/Qwen3.5-9B`. No base checkpoint is omitted from the image.
 
-This folder holds the data used to develop and evaluate the rules, the code that generated the
-self-generated data, and a checksum manifest.
+This folder holds the data used to develop and evaluate the rules, and a checksum manifest.
 
 ## Contents
 
@@ -18,12 +17,9 @@ self-generated data, and a checksum manifest.
 | `data/manifests/repair_eval/` | Train and paraphrase questions used to evaluate the rewrite step |
 | `data/synthetic/paraphrases_v1/` | Paraphrase set 1: 750 generated, 663 kept |
 | `data/synthetic/paraphrases_v2/` | Paraphrase set 2: 450 generated, 404 kept |
-| `data_generation/make_paraphrases.py` | Generates a paraphrase set from train questions |
-| `data_generation/synth_phone.py`, `synth_baby.py`, `synth_repair.py` | Build small phone, mother-and-baby and repair shops with known answers |
-| `data_generation/replay_frames.py` | Re-compiles stored model frames without model calls |
 | `configs/pipeline.json` | Fixed inference settings used by `/code/predict.sh` |
 | `src/make_manifest.py`, `train.sh` | Regenerate `data_manifest.json` |
-| `data_manifest.json` | Relative path, size and SHA-256 of every file in `data/`, `data_generation/`, `configs/` |
+| `data_manifest.json` | Relative path, size and SHA-256 of every file in `data/`, `configs/` |
 | `logs/`, `checkpoints/` | Empty: nothing was trained |
 | `requirements.txt` | Pinned dependencies (same as `/code/requirements.txt`) |
 
@@ -42,21 +38,9 @@ token are dropped.
 Settings are recorded in each set's `meta.json`. Generation is sampled and therefore **not bit-reproducible**;
 every prompt and raw model response is stored in `generation.jsonl` so the sets can be verified as produced.
 
-Regenerating a set (needs an OpenAI-compatible endpoint serving Qwen3.5-9B, configured in `.env`):
-
-```bash
-PYTHONPATH=src python training_code/data_generation/make_paraphrases.py --per-shop 25 --seed 42 \
-  --out training_code/data/synthetic/paraphrases_v1
-```
-
-The scripts import the solver package `datamate`, so run them with `PYTHONPATH` pointing at the solver source
-(`src/` in the repository, `/code/src` in the image). The generated shops follow the released rulebook and
-expect the challenge data at the repository root (`train/calendar.csv`, `public_test/rulebook.md`). They are
-deterministic and are rebuilt by the unit tests and by:
-
-```bash
-PYTHONPATH=src python training_code/data_generation/synth_phone.py --out runs/synth_phone
-```
+The scripts that generated these sets and the generated shops (paraphrase generation, phone / mother-and-baby /
+repair shops, frame replay) are **not included in this image**. The paraphrase sets themselves are stored under
+`data/synthetic/`, with every prompt and raw response in `generation.jsonl`; the generated shops are not stored.
 
 ## Verifying the manifest
 

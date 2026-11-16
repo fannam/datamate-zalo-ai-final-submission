@@ -1,10 +1,10 @@
-"""Write data_manifest.json: relative path, size, SHA-256 of every file under data/, data_generation/, configs/."""
+"""Write data_manifest.json: relative path, size, SHA-256 of every file under data/, configs/."""
 import hashlib, json
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
 files = []
-for sub in ("data", "data_generation", "configs"):
+for sub in ("data", "configs"):
     for p in sorted((root / sub).rglob("*")):
         if p.is_file() and "__pycache__" not in p.parts:
             files.append({"path": f"{sub}/{p.relative_to(root / sub)}", "bytes": p.stat().st_size,
